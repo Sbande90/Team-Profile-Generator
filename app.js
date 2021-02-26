@@ -16,52 +16,52 @@ const employeeTypeQ = [
         type:"rawlist",
         message:"select role",
         name:"employeeRole",
-        choices:["Employee", "Engineer", "Manager", "Intern"]
+        choices:["Engineer", "Manager", "Intern"]
     }
 ]
 
- const employeeQuestions= [
-     // name,id,email
+//  const employeeQuestions= [
+//      // name,id,email
 
-     {
-        type:"input",
-        message:"id",
-        name:"id",
-        validate: function(value){
-            if(value){
-                return true;
-            }else{
-               return "this information is required";
-            }
-        }
-    },
+//      {
+//         type:"input",
+//         message:"id",
+//         name:"id",
+//         validate: function(value){
+//             if(value){
+//                 return true;
+//             }else{
+//                return "this information is required";
+//             }
+//         }
+//     },
 
-    {
-        type:"input",
-        message:"name",
-        name:"name",
-        validate: function(value){
-            if(value){
-                return true;
-            }else{
-               return "this information is required";
-            }
-        }
-    },
+//     {
+//         type:"input",
+//         message:"name",
+//         name:"name",
+//         validate: function(value){
+//             if(value){
+//                 return true;
+//             }else{
+//                return "this information is required";
+//             }
+//         }
+//     },
 
-    {
-        type:"input",
-        message:"email",
-        name:"email",
-        validate: function(value){
-            if(value){
-                return true;
-            }else{
-               return "this information is required";
-            }
-        }
-    }
- ] 
+//     {
+//         type:"input",
+//         message:"email",
+//         name:"email",
+//         validate: function(value){
+//             if(value){
+//                 return true;
+//             }else{
+//                return "this information is required";
+//             }
+//         }
+//     }
+//  ] 
 
 
  // engineer
@@ -248,13 +248,13 @@ let internArray =[];
 function creatEmployee (){
     inquirer.prompt(employeeTypeQ).then(answer =>{
         employeeType=answer.employeeRole;
-        if(answer.employeeRole=="Employee"){
-            inquirer.prompt(employeeQuestions).then(res =>{
-                var newEmployee = new Employee(res.name, res.id, res.email);
-                employeeArray.push(newEmployee);
-                restart();
-            })
-        };
+        // if(answer.employeeRole=="Employee"){
+        //     inquirer.prompt(employeeQuestions).then(res =>{
+        //         var newEmployee = new Employee(res.name, res.id, res.email);
+        //         employeeArray.push(newEmployee);
+        //         restart();
+        //     })
+        // };
 
 
         if(answer.employeeRole=="Engineer"){
@@ -304,7 +304,11 @@ function restart(){
             // generate htmlfile
 
             let file = render(employeeArray);
-            console.log(file);
+            // console.log(file);
+
+            fs.writeFile("team.html",file, function(){
+                console.log("file created")
+            })
         }
     })
 }
