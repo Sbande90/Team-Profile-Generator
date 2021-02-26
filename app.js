@@ -9,6 +9,7 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
+const Employee = require("./lib/Employee");
 
 const employeeTypeQ = [
     {
@@ -23,18 +24,291 @@ const employeeTypeQ = [
      // name,id,email
 
      {
-        type:"rawlist",
-        message:"select role",
-        name:"employeeRole",
+        type:"input",
+        message:"id",
+        name:"id",
         validate: function(value){
             if(value){
                 return true;
             }else{
-                "this information is required";
+               return "this information is required";
+            }
+        }
+    },
+
+    {
+        type:"input",
+        message:"name",
+        name:"name",
+        validate: function(value){
+            if(value){
+                return true;
+            }else{
+               return "this information is required";
+            }
+        }
+    },
+
+    {
+        type:"input",
+        message:"email",
+        name:"email",
+        validate: function(value){
+            if(value){
+                return true;
+            }else{
+               return "this information is required";
             }
         }
     }
  ] 
+
+
+ // engineer
+ const engineerQuestions= [
+    // name,id,email
+
+    {
+       type:"input",
+       message:"id",
+       name:"id",
+       validate: function(value){
+           if(value){
+               return true;
+           }else{
+              return "this information is required";
+           }
+       }
+   },
+
+   {
+       type:"input",
+       message:"name",
+       name:"name",
+       validate: function(value){
+           if(value){
+               return true;
+           }else{
+              return "this information is required";
+           }
+       }
+   },
+
+   {
+       type:"input",
+       message:"email",
+       name:"email",
+       validate: function(value){
+           if(value){
+               return true;
+           }else{
+              return "this information is required";
+           }
+       }
+   },
+
+   {
+    type:"input",
+    message:"github",
+    name:"github",
+    validate: function(value){
+        if(value){
+            return true;
+        }else{
+           return "this information is required";
+        }
+    }
+},
+
+] 
+
+// manger
+const managerQuestions= [
+    
+
+    {
+       type:"input",
+       message:"id",
+       name:"id",
+       validate: function(value){
+           if(value){
+               return true;
+           }else{
+              return "this information is required";
+           }
+       }
+   },
+
+   {
+       type:"input",
+       message:"name",
+       name:"name",
+       validate: function(value){
+           if(value){
+               return true;
+           }else{
+              return "this information is required";
+           }
+       }
+   },
+
+   {
+       type:"input",
+       message:"email",
+       name:"email",
+       validate: function(value){
+           if(value){
+               return true;
+           }else{
+              return "this information is required";
+           }
+       }
+   },
+
+   {
+    type:"input",
+    message:"officeNumber",
+    name:"officeNumber",
+    validate: function(value){
+        if(value){
+            return true;
+        }else{
+           return "this information is required";
+        }
+    }
+},
+
+] 
+
+// Intern
+
+const internQuestions= [
+    
+
+    {
+       type:"input",
+       message:"id",
+       name:"id",
+       validate: function(value){
+           if(value){
+               return true;
+           }else{
+              return "this information is required";
+           }
+       }
+   },
+
+   {
+       type:"input",
+       message:"name",
+       name:"name",
+       validate: function(value){
+           if(value){
+               return true;
+           }else{
+              return "this information is required";
+           }
+       }
+   },
+
+   {
+       type:"input",
+       message:"email",
+       name:"email",
+       validate: function(value){
+           if(value){
+               return true;
+           }else{
+              return "this information is required";
+           }
+       }
+   },
+
+   {
+    type:"input",
+    message:"school",
+    name:"school",
+    validate: function(value){
+        if(value){
+            return true;
+        }else{
+           return "this information is required";
+        }
+    }
+},
+
+] 
+let employeeType ="";
+let employeeArray =[];
+let engineerArray =[];
+let managerArray =[];
+let internArray =[];
+// name:"employeeRole",
+//         choices:["Employee", "Engineer", "Manager", "Intern"]
+function creatEmployee (){
+    inquirer.prompt(employeeTypeQ).then(answer =>{
+        employeeType=answer.employeeRole;
+        if(answer.employeeRole=="Employee"){
+            inquirer.prompt(employeeQuestions).then(res =>{
+                var newEmployee = new Employee(res.name, res.id, res.email);
+                employeeArray.push(newEmployee);
+                restart();
+            })
+        };
+
+
+        if(answer.employeeRole=="Engineer"){
+            inquirer.prompt(engineerQuestions).then(res =>{
+                var newEmployee = new Engineer(res.name, res.id, res.email, res.github);
+                employeeArray.push(newEmployee);
+                restart();
+            })
+        };
+
+
+        if(answer.employeeRole=="Manager"){
+            inquirer.prompt(managerQuestions).then(res =>{
+                var newEmployee = new Manager(res.name, res.id, res.email, res.officeNumber);
+                employeeArray.push(newEmployee);
+                restart();
+            })
+        };
+
+
+        if(answer.employeeRole=="Intern"){
+            inquirer.prompt(internQuestions).then(res =>{
+                var newEmployee = new Intern(res.name, res.id, res.email, res.school);
+                employeeArray.push(newEmployee);
+                restart();
+            })
+        }
+    })
+}
+
+creatEmployee();
+
+function restart(){
+    const question = [
+        {
+            type:"rawlist",
+            message:"add another employee?",
+            name:"restart",
+            choices:["Yes", "No"]
+        }
+    ];
+
+    inquirer.prompt(question).then(res =>{
+        if(res.restart=="Yes"){
+            creatEmployee();
+        }else{
+            // generate htmlfile
+
+            let file = render(employeeArray);
+            console.log(file);
+        }
+    })
+}
+
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
